@@ -5,15 +5,12 @@
 	{{ if .ExistsTypeName -}}
 	var v {{ .ExistsTypeName }}
 	{{ end -}}
-	resourceName := "{{ .TypeName}}.test"
-	{{ if .Generator -}}
+	resourceName := "{{ .TypeName}}.test"{{ if .Generator }}
 	rName := {{ .Generator }}
-	{{ else -}}
-	rName := sdkacctest.RandomWithPrefix(acctest.ResourcePrefix)
-	{{- end }}
-	{{ range .InitCodeBlocks -}}
-	{{ .Code }}
-	{{ end }}
+{{- end }}
+{{ range .InitCodeBlocks -}}
+{{ .Code }}
+{{- end }}
 {{ end }}
 
 {{ define "TestCaseSetup" -}}
@@ -55,9 +52,6 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/config"
-	{{- if eq .Generator "" }}
- 	sdkacctest "github.com/hashicorp/terraform-plugin-testing/helper/acctest"
- 	{{- end }}
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
@@ -100,8 +94,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -117,8 +111,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -130,8 +124,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 						"key2": config.StringVariable("value2"),
@@ -149,8 +143,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 						"key2": config.StringVariable("value2"),
@@ -163,8 +157,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key2": config.StringVariable("value2"),
 					}),
@@ -183,8 +177,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key2": config.StringVariable("value2"),
 					}),
@@ -199,8 +193,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -216,8 +210,8 @@ func {{ template "testname" . }}_tags(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -243,8 +237,8 @@ func {{ template "testname" . }}_tags_null(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": nil,
 					}),
@@ -259,8 +253,8 @@ func {{ template "testname" . }}_tags_null(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": nil,
 					}),
@@ -272,8 +266,8 @@ func {{ template "testname" . }}_tags_null(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -294,8 +288,8 @@ func {{ template "testname" . }}_tags_AddOnUpdate(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -308,8 +302,8 @@ func {{ template "testname" . }}_tags_AddOnUpdate(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -325,8 +319,8 @@ func {{ template "testname" . }}_tags_AddOnUpdate(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -351,8 +345,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnCreate(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable(""),
 					}),
@@ -368,8 +362,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnCreate(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable(""),
 					}),
@@ -381,8 +375,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnCreate(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -395,8 +389,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnCreate(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -419,8 +413,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Add(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -436,8 +430,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Add(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 						"key2": config.StringVariable(""),
@@ -455,8 +449,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Add(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 						"key2": config.StringVariable(""),
@@ -469,8 +463,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Add(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -486,8 +480,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Add(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -512,8 +506,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Replace(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -529,8 +523,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Replace(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable(""),
 					}),
@@ -546,8 +540,8 @@ func {{ template "testname" . }}_tags_EmptyTag_OnUpdate_Replace(t *testing.T) {
 			},
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable(""),
 					}),
@@ -570,8 +564,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -590,8 +584,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -605,8 +599,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 						"key2": config.StringVariable("value2"),
@@ -627,8 +621,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 						"key2": config.StringVariable("value2"),
@@ -643,8 +637,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key2": config.StringVariable("value2"),
 					}),
@@ -666,8 +660,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key2": config.StringVariable("value2"),
 					}),
@@ -684,8 +678,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -703,8 +697,8 @@ func {{ template "testname" . }}_tags_DefaultTags_providerOnly(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -728,8 +722,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1"),
 					}),
@@ -752,8 +746,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1"),
 					}),
@@ -769,8 +763,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1updated"),
 					}),
@@ -796,8 +790,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1updated"),
 					}),
@@ -814,8 +808,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -833,8 +827,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nonOverlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"resource_tags": nil,
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -858,8 +852,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 					}),
@@ -881,8 +875,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 					}),
@@ -898,8 +892,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 						"overlapkey2": config.StringVariable("providervalue2"),
@@ -925,8 +919,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 						"overlapkey2": config.StringVariable("providervalue2"),
@@ -944,8 +938,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 					}),
@@ -967,8 +961,8 @@ func {{ template "testname" . }}_tags_DefaultTags_overlapping(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"overlapkey1": config.StringVariable("providervalue1"),
 					}),
@@ -994,8 +988,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToProviderOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1014,8 +1008,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToProviderOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1034,8 +1028,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToProviderOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1059,8 +1053,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToResourceOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1079,8 +1073,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToResourceOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1099,8 +1093,8 @@ func {{ template "testname" . }}_tags_DefaultTags_updateToResourceOnly(t *testin
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1126,8 +1120,8 @@ func {{ template "testname" . }}_tags_DefaultTags_emptyResourceTag(t *testing.T)
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1149,8 +1143,8 @@ func {{ template "testname" . }}_tags_DefaultTags_emptyResourceTag(t *testing.T)
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1179,8 +1173,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nullOverlappingResourceTag(t *
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("providervalue1"),
 					}),
@@ -1201,8 +1195,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nullOverlappingResourceTag(t *
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("providervalue1"),
 					}),
@@ -1231,8 +1225,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nullNonOverlappingResourceTag(
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1"),
 					}),
@@ -1253,8 +1247,8 @@ func {{ template "testname" . }}_tags_DefaultTags_nullNonOverlappingResourceTag(
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags_defaults/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"provider_tags": config.MapVariable(map[string]config.Variable{
 						"providerkey1": config.StringVariable("providervalue1"),
 					}),
@@ -1280,8 +1274,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnCreate(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed1/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("computedkey1"),
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -1308,8 +1302,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnCreate(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed1/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("computedkey1"),
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -1330,8 +1324,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Add(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1348,8 +1342,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Add(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed2/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("computedkey1"),
 					"knownTagKey":   config.StringVariable("key1"),
 					"knownTagValue": config.StringVariable("value1"),
@@ -1379,8 +1373,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Add(t *testing.T) {
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed2/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("computedkey1"),
 					"knownTagKey":   config.StringVariable("key1"),
 					"knownTagValue": config.StringVariable("value1"),
@@ -1403,8 +1397,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Replace(t *testing.T)
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tags/"),
-				ConfigVariables: config.Variables{
-					"rName": config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName": config.StringVariable(rName),{{ end }}
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1421,8 +1415,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Replace(t *testing.T)
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed1/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("key1"),
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),
@@ -1449,8 +1443,8 @@ func {{ template "testname" . }}_tags_ComputedTag_OnUpdate_Replace(t *testing.T)
 			{
 				ProtoV5ProviderFactories: acctest.ProtoV5ProviderFactories,
 				ConfigDirectory:          config.StaticDirectory("testdata/{{ .Name }}/tagsComputed1/"),
-				ConfigVariables: config.Variables{
-					"rName":         config.StringVariable(rName),
+				ConfigVariables: config.Variables{ {{ if .Generator }}
+					"rName":         config.StringVariable(rName),{{ end }}
 					"unknownTagKey": config.StringVariable("key1"),
 					{{ range $name, $value := .AdditionalTfVars -}}
 					"{{ $name }}": config.StringVariable({{ $value }}),

@@ -1648,7 +1648,6 @@ func TestAccACMCertificate_PrivateKey_ReimportWithTags(t *testing.T) {
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/Certificate/tags/"),
 				ConfigVariables: config.Variables{
-					"rName": config.StringVariable("unused"),
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1664,7 +1663,6 @@ func TestAccACMCertificate_PrivateKey_ReimportWithTags(t *testing.T) {
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/Certificate/tags/"),
 				ConfigVariables: config.Variables{
-					"rName": config.StringVariable("unused"),
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1"),
 					}),
@@ -1681,7 +1679,6 @@ func TestAccACMCertificate_PrivateKey_ReimportWithTags(t *testing.T) {
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/Certificate/tags/"),
 				ConfigVariables: config.Variables{
-					"rName": config.StringVariable("unused"),
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 					}),
@@ -1697,7 +1694,6 @@ func TestAccACMCertificate_PrivateKey_ReimportWithTags(t *testing.T) {
 			{
 				ConfigDirectory: config.StaticDirectory("testdata/Certificate/tags/"),
 				ConfigVariables: config.Variables{
-					"rName": config.StringVariable("unused"),
 					"resource_tags": config.MapVariable(map[string]config.Variable{
 						"key1": config.StringVariable("value1updated"),
 					}),
